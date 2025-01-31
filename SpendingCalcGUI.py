@@ -14,35 +14,36 @@ def calculate():
             A = float(entry_A.get())
             x, final_amount = earliest_spend_year(C, r, G, T, A)
             if x is None:
-                result.set(f"It's not possible to spend {A} and still reach the goal.\nWithout spending, you'd have {C * (1 + r) ** T:.2f} by year {T}.")
+                result.set(f"\nIt's not possible to spend {A} and still reach the goal.\n\nWithout spending, you'd have {C * (1 + r) ** T:.2f} by year {T}.\n")
             else:
-                result.set(f"Possible!\nYou can spend {A} at year {x} (or later) and still reach {G} by year {T}.\nFinal amount: {final_amount:.2f}\nWithout spending, you would have {C * (1 + r) ** T:.2f}.")
+                result.set(f"\n✅ Possible!\n\n💰 You can spend {A} at year {x} (or later) and still reach {G} by year {T}.\n📊 Final amount: {final_amount:.2f}\n📈 Without spending, you would have {C * (1 + r) ** T:.2f}.\n")
         else:
             M = float(entry_M.get())
             m, final_amount = earliest_monthly_spend(C, r, G, T, M)
             if m is None:
-                result.set(f"It's not possible to spend {M} monthly and still reach the goal.\nWithout spending, you'd have {C * (1 + r) ** T:.2f} by year {T}.")
+                result.set(f"\nIt's not possible to spend {M} monthly and still reach the goal.\n\nWithout spending, you'd have {C * (1 + r) ** T:.2f} by year {T}.\n")
             else:
                 years = m // 12
                 months = m % 12
-                result.set(f"Possible!\nYou can start spending {M} monthly from year {years}, month {months}.\nFinal amount: {final_amount:.2f}\nWithout spending, you would have {C * (1 + r) ** T:.2f}.")
+                result.set(f"\n✅ Possible!\n\n📅 You can start spending {M} monthly from year {years}, month {months}.\n📊 Final amount: {final_amount:.2f}\n📈 Without spending, you would have {C * (1 + r) ** T:.2f}.\n")
     except ValueError:
         messagebox.showerror("Input error", "Please enter valid numerical values.")
 
 root = tk.Tk()
 root.title("Spending Calculator")
+root.geometry("1400x700")  # Increased window size
 root.configure(bg="#e6f4ea")  # Soft green background
 
 main_frame = tk.Frame(root, bg="#d4edda", padx=20, pady=20, relief="ridge", bd=2)
-main_frame.pack(pady=20, padx=20)
+main_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
 def create_label(text, row, column):
-    label = tk.Label(main_frame, text=text, bg="#d4edda", fg="#2a5934", font=("Segoe UI", 12, "bold"))
-    label.grid(row=row, column=column, padx=10, pady=5, sticky="w")
+    label = tk.Label(main_frame, text=text, bg="#d4edda", fg="#2a5934", font=("Segoe UI", 13, "bold"))
+    label.grid(row=row, column=column, padx=10, pady=8, sticky="w")
 
 def create_entry(default, row, column):
-    entry = tk.Entry(main_frame, font=("Segoe UI", 12), bd=0, relief="solid", highlightthickness=1, highlightbackground="#4caf50", highlightcolor="#4caf50", justify="center")
-    entry.grid(row=row, column=column, padx=10, pady=5, ipadx=5, ipady=5)
+    entry = tk.Entry(main_frame, font=("Segoe UI", 13), bd=0, relief="solid", highlightthickness=1, highlightbackground="#4caf50", highlightcolor="#4caf50", justify="center")
+    entry.grid(row=row, column=column, padx=10, pady=8, ipadx=8, ipady=5)
     entry.insert(0, default)
     return entry
 
@@ -60,7 +61,7 @@ entry_T = create_entry("30", 3, 1)
 
 var = tk.StringVar(value="lump-sum")
 radio_frame = tk.Frame(main_frame, bg="#d4edda")
-radio_frame.grid(row=4, column=0, columnspan=2, pady=5)
+radio_frame.grid(row=4, column=0, columnspan=2, pady=8)
 
 tk.Radiobutton(radio_frame, text="Lump-Sum Withdrawal", variable=var, value="lump-sum", bg="#d4edda", fg="#2a5934", font=("Segoe UI", 12)).pack(side="left", padx=10)
 tk.Radiobutton(radio_frame, text="Monthly Withdrawal", variable=var, value="monthly", bg="#d4edda", fg="#2a5934", font=("Segoe UI", 12)).pack(side="left", padx=10)
@@ -77,13 +78,13 @@ def on_hover(event):
 def on_leave(event):
     event.widget.config(bg="#4caf50")
 
-btn_calculate = tk.Button(main_frame, text="Calculate", command=calculate, bg="#4caf50", fg="white", font=("Segoe UI", 12, "bold"), padx=10, pady=5, bd=0, relief="flat")
-btn_calculate.grid(row=7, column=0, columnspan=2, pady=10)
+btn_calculate = tk.Button(main_frame, text="Calculate", command=calculate, bg="#4caf50", fg="white", font=("Segoe UI", 13, "bold"), padx=12, pady=6, bd=0, relief="flat")
+btn_calculate.grid(row=7, column=0, columnspan=2, pady=12)
 btn_calculate.bind("<Enter>", on_hover)
 btn_calculate.bind("<Leave>", on_leave)
 
 result = tk.StringVar()
-result_label = tk.Label(main_frame, textvariable=result, fg="#2a5934", bg="#d4edda", font=("Segoe UI", 12, "bold"), justify="left", wraplength=400)
-result_label.grid(row=8, column=0, columnspan=2, pady=5)
+result_label = tk.Label(main_frame, textvariable=result, fg="#2a5934", bg="#d4edda", font=("Segoe UI", 13, "bold"), justify="left", wraplength=500, anchor="w")
+result_label.grid(row=8, column=0, columnspan=2, pady=12, padx=10, sticky="w")
 
 root.mainloop()
