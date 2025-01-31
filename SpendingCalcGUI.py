@@ -14,18 +14,18 @@ def calculate():
             A = float(entry_A.get())
             x, final_amount = earliest_spend_year(C, r, G, T, A)
             if x is None:
-                result.set(f"Not possible to spend {A} and reach the goal.")
+                result.set(f"It's not possible to spend {A} and still reach the goal.\nWithout spending, you'd have {C * (1 + r) ** T:.2f} by year {T}.")
             else:
-                result.set(f"You can spend {A} in year {x} and still reach {G}. Final: {final_amount:.2f}")
+                result.set(f"Possible!\nYou can spend {A} at year {x} (or later) and still reach {G} by year {T}.\nFinal amount: {final_amount:.2f}\nWithout spending, you would have {C * (1 + r) ** T:.2f}.")
         else:
             M = float(entry_M.get())
             m, final_amount = earliest_monthly_spend(C, r, G, T, M)
             if m is None:
-                result.set(f"Not possible to spend {M} monthly and reach the goal.")
+                result.set(f"It's not possible to spend {M} monthly and still reach the goal.\nWithout spending, you'd have {C * (1 + r) ** T:.2f} by year {T}.")
             else:
                 years = m // 12
                 months = m % 12
-                result.set(f"Start spending {M} monthly from year {years}, month {months}. Final: {final_amount:.2f}")
+                result.set(f"Possible!\nYou can start spending {M} monthly from year {years}, month {months}.\nFinal amount: {final_amount:.2f}\nWithout spending, you would have {C * (1 + r) ** T:.2f}.")
     except ValueError:
         messagebox.showerror("Input error", "Please enter valid numerical values.")
 
@@ -83,7 +83,7 @@ btn_calculate.bind("<Enter>", on_hover)
 btn_calculate.bind("<Leave>", on_leave)
 
 result = tk.StringVar()
-result_label = tk.Label(main_frame, textvariable=result, fg="#2a5934", bg="#d4edda", font=("Segoe UI", 12, "bold"))
+result_label = tk.Label(main_frame, textvariable=result, fg="#2a5934", bg="#d4edda", font=("Segoe UI", 12, "bold"), justify="left", wraplength=400)
 result_label.grid(row=8, column=0, columnspan=2, pady=5)
 
 root.mainloop()
