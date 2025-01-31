@@ -56,7 +56,7 @@ def calculate():
             M = float(entry_M.get())
             m, final_amount = earliest_monthly_spend(C, r_percent, G, T, M)
 
-            if m is None:
+            if m is None or M > G:
                 result.set(
                     f"\nIt's not possible to spend {M} monthly and still reach the goal.\n\n"
                     f"Without spending, you'd have {capital_no_spend[-1]:.2f} by year {T}.\n"
