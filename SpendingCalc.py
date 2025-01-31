@@ -25,6 +25,9 @@ def earliest_spend_year(C, r, G, T, A):
         x is the earliest year you can withdraw A and still end up with >= G.
         If it's impossible, returns (None, capital_without_spending).
     """
+    # Convert percentage to decimal
+    r = r / 100  
+
     # Calculate the capital if you never spend
     final_without_spending = C * (1 + r) ** T
 
@@ -38,7 +41,6 @@ def earliest_spend_year(C, r, G, T, A):
         capital_after_x_years = C * (1 + r) ** x
         # Withdraw lump sum A
         capital_after_spending = capital_after_x_years - A
-        # If negative, skip (though in principle you could check if it recovers, but let's keep it consistent)
         # Grow for remaining (T - x) years
         final_amount = capital_after_spending * (1 + r) ** (T - x)
 
@@ -74,7 +76,10 @@ def earliest_monthly_spend(C, r, G, T, M):
         m is the earliest month you can start withdrawing M and still end up with >= G.
         If it's impossible, returns (None, capital_without_spending).
     """
-    monthly_rate = (1 + r) ** (1/12) - 1
+    # Convert percentage to decimal
+    r = r / 100  
+    # Convert annual return to monthly return
+    monthly_rate = (1 + r) ** (1/12) - 1  
     total_months = T * 12
 
     # Capital if you never spend
@@ -93,11 +98,9 @@ def earliest_monthly_spend(C, r, G, T, M):
         # 2) Now withdraw M for each of the remaining months
         remaining = total_months - m
         for _ in range(remaining):
-            # Withdraw at start of month
             capital -= M
             if capital < 0:
-                # No point going further; can't recover from negative if M keeps being withdrawn
-                break
+                break  # Stop early if capital goes negative
             capital *= (1 + monthly_rate)
 
         # Check if final capital after T years is >= G
@@ -112,17 +115,17 @@ def earliest_monthly_spend(C, r, G, T, M):
 if __name__ == "__main__":
     # Example input
     C_input = 10000            # Starting capital 
-    r_input = 0.30           # Annual performance  
-    G_input = 2000000            # Target capital
-    T_input = 20             # Time horizon in years
-    A_input = 3000            # Lump-sum withdrawal
-    M_input = 500             # Monthly withdrawal
+    r_input = 30               # Annual performance in percentage (e.g., 30 for 30%)
+    G_input = 2000000          # Target capital
+    T_input = 20               # Time horizon in years
+    A_input = 3000             # Lump-sum withdrawal
+    M_input = 500              # Monthly withdrawal
 
     # Choose withdrawal type: "lump-sum" or "monthly"
     withdrawal_type = "lump-sum"  # or "monthly"
 
-    # Also compute final_without_spending for display
-    final_without_spending = C_input * ((1 + r_input) ** T_input)
+    # Compute final amount without spending for reference
+    final_without_spending = C_input * ((1 + r_input / 100) ** T_input)
 
     if withdrawal_type == "lump-sum":
         x, final_amount = earliest_spend_year(C_input, r_input, G_input, T_input, A_input)
