@@ -35,18 +35,22 @@ root.title("Spending Calculator")
 tk.Label(root, text="Initial Capital (C):").grid(row=0, column=0)
 entry_C = tk.Entry(root)
 entry_C.grid(row=0, column=1)
+entry_C.insert(0, "20000")  # Set default value
 
 tk.Label(root, text="Annual Performance (r):").grid(row=1, column=0)
 entry_r = tk.Entry(root)
 entry_r.grid(row=1, column=1)
+entry_r.insert(0, "0.09")  # Set default value
 
 tk.Label(root, text="Target Amount (G):").grid(row=2, column=0)
 entry_G = tk.Entry(root)
 entry_G.grid(row=2, column=1)
+entry_G.insert(0, "200000")  # Set default value
 
 tk.Label(root, text="Total Years (T):").grid(row=3, column=0)
 entry_T = tk.Entry(root)
 entry_T.grid(row=3, column=1)
+entry_T.insert(0, "30")  # Set default value
 
 var = tk.StringVar(value="lump-sum")
 tk.Radiobutton(root, text="Lump-Sum Withdrawal", variable=var, value="lump-sum").grid(row=4, column=0)
@@ -55,10 +59,12 @@ tk.Radiobutton(root, text="Monthly Withdrawal", variable=var, value="monthly").g
 tk.Label(root, text="Lump-Sum Amount (A):").grid(row=5, column=0)
 entry_A = tk.Entry(root)
 entry_A.grid(row=5, column=1)
+entry_A.insert(0, "1000")  # Set default value
 
 tk.Label(root, text="Monthly Withdrawal (M):").grid(row=6, column=0)
 entry_M = tk.Entry(root)
 entry_M.grid(row=6, column=1)
+entry_M.insert(0, "200")  # Set default value
 
 btn_calculate = tk.Button(root, text="Calculate", command=calculate)
 btn_calculate.grid(row=7, column=0, columnspan=2)
